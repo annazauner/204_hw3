@@ -1,0 +1,74 @@
+---
+title: "ESM 204 HW 3"
+output: html_document
+date: 'Anna Zauner'
+---
+
+```{r setup, include=TRUE, message=FALSE, warning=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, options(scipen = 999))
+library(tidyverse)
+library(here)
+library(janitor)
+library(thematic)
+library(scales)
+library(equatiomatic)
+thematic::thematic_rmd()
+thematic::thematic_on()
+```
+
+
+## Introduction
+
+```{r}
+# Read in the data 
+data1 <- read_csv(here("data","HW3_data.csv")) %>% 
+  clean_names() %>% 
+  select(-x1)
+```
+
+
+The Biden Administration’s “interim” value is $51 per metric ton of CO2. In this analysis, we consider the distributional consequences of a household electricity tax based on the Social Cost of Carbon (SCC) to address the climate change problem.
+
+Assumptions:
+- Consumers can separated into two income groups: “high” and “low.” 
+- Price ($) and quantity (kWh) estimates of demand per month for the two groups. 
+- Initially, there is no tax on electricity consumption.
+- The current electricity price (without any taxes) is $.10 per kWh.
+- The marginal cost of producing a kWh of electricity is linear and has a price-intercept of 0.
+
+
+### **1. Marginal Externality Cost**
+
+Assumptions:
+- One kWh of electricity emits 0.85 pounds of CO2 
+- Interim value of $51 per metric ton of CO2 
+
+```{r}
+# PIVOT LONGER WIH INCOME AS VARIABLE 
+
+data_long <- data1 %>% 
+  pivot_longer(cols = c(q_low_kwh, q_high_kwh),
+               names_to = 'income',
+               values_to = 'kwh') %>% 
+  mutate(income = case_when(income == 'q_low_kwh' ~ 'low',
+                   income == 'q_high_kwh' ~ 'high'))
+
+# RUN CALCULATION FOR MEC
+
+price_ton <- 51
+
+# METRIC TON UNIT CONVERSION
+
+price_lb <- price_ton/2205
+
+price_lb
+
+# Multiply by 0.85 to get MEC/kWh
+
+price_kWh <- price_lb*0.85
+
+price_kWh
+
+```
+
+Based on the calculations, the MEC per kWh of electricity is **0.0197**.
