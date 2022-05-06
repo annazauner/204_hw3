@@ -445,8 +445,8 @@ price_kWh</code></pre>
 <li>Environmental cost under status quo</li>
 </ol>
 <p><strong>Low income demand</strong></p>
-<pre class="r"><code># aggregate demand curve for electricity
-# lm estimates from data for low and high
+<pre class="r"><code># LM ESTIMATE FOR LOW INCOME
+
 demand_low &lt;- lm(price_cents ~ kwh, income ==&#39;low&#39;, 
                  data = data_long) 
 
@@ -460,7 +460,9 @@ demand_low</code></pre>
 ## (Intercept)          kwh  
 ##  23.3709671   -0.0001102</code></pre>
 <p><strong>High income demand</strong></p>
-<pre class="r"><code>demand_high &lt;- lm(price_cents ~ kwh, income ==&#39;high&#39;,
+<pre class="r"><code># LM ESTIMATE FOR HIGH INCOME
+
+demand_high &lt;- lm(price_cents ~ kwh, income ==&#39;high&#39;,
                   data = data_long) 
 
 demand_high</code></pre>
@@ -472,28 +474,35 @@ demand_high</code></pre>
 ## Coefficients:
 ## (Intercept)          kwh  
 ## 31.60685605  -0.00005202</code></pre>
-<ol style="list-style-type: lower-alpha">
-<li>Given these income-based demand curves, we can sum horizontally to
-get the <strong>aggregate demand curve:</strong></li>
-</ol>
-<pre class="r"><code># Switch the equations above so Q is on one side and then add 
+<p><strong>a. Aggregate monthly demand for electricity</strong></p>
+<p>Sum high and low demand curves horizontally to get aggregate demand
+curve:</p>
+<pre class="r"><code># MOVE Q TO ONE SIDE TO HORIZONTALLY SUMMIZE
+
 demand_low_flip &lt;- lm(kwh ~ price_cents, income==&#39;low&#39;, 
                  data = data_long) 
 demand_high_flip &lt;- lm(kwh ~ price_cents, income==&#39;high&#39;,
                   data = data_long) 
+
+# FIND AGG INTERCEPT AND SLOPE
+
 kwh_agg_int &lt;- (demand_low_flip$coefficients[1]+
                   demand_high_flip$coefficients[1])
 kwh_agg_slope &lt;- (demand_low_flip$coefficients[2] +
                     demand_high_flip$coefficients[2])
+
+# FIND DEMAND AGG FUNCTION
+
 demand_agg_p &lt;- function(price_cents){kwh_agg_int +
     kwh_agg_slope*(price_cents)}
 demand_agg_int &lt;- kwh_agg_int/-kwh_agg_slope
 demand_agg_slope &lt;- 1/kwh_agg_slope
-# Aggregate demand function is P = 30.5 - 0.000039Q
+
+# AGG DEMAND FUNCTION: P = 30.5 - 0.000039Q
+
 demand_agg &lt;- function(kwh){demand_agg_int + demand_agg_slope*kwh}</code></pre>
-<p>This gives us an aggregate demand of equation of <em>P = 30.5 -
-0.000039Q</em>.</p>
-<p><em>Note: this gives price in cents, not dollars</em></p>
+<p><em>P = 30.5 - 0.000039Q</em>.</p>
+<p><strong>b. Supply curve for electricity</strong></p>
 <p>Now we need to calculate the supply curve for electricity. We already
 know that the current price is $0.10/kWh. We also know the MC for
 electricity is linear with a 0 intercept.</p>
@@ -505,7 +514,8 @@ curve at the level of demand for a price of $0.10/kwh, we can infer that
 the supply curve (or marginal cost per kWh of electricity) function
 is:</p>
 <p><em>P = 0.0000192Q</em></p>
-<p><em>Note: this gives a price in cents, not dollars</em></p>
+<p><strong>c. Benefit to consumers and producers under status
+quo</strong></p>
 <p>From this, we can calculate consumer and producer surplus as well as
 environmental cost.</p>
 <pre class="r"><code># CS needs Y intercept --&gt; at 0 kWh, price would be $0.305
@@ -515,16 +525,17 @@ cs_baseline &lt;- 0.5*kwh_agg*(0.305 - 0.10)
 # PS easy, just go up to 10 and out to the kwh 
 ps_baseline &lt;- 0.5*kwh_agg*0.10
 # $26,106
-# cost is rectangle 
-env_cost_baseline &lt;- price_kWh*kwh_agg
-# $10,265</code></pre>
+# cost is rectangle </code></pre>
 <ul>
 <li>Consumer Benefit = $53518</li>
 <li>Producer Benefit = $26106</li>
+</ul>
+<p><strong>d. Environmental cost under status quo</strong></p>
+<pre class="r"><code>env_cost_baseline &lt;- price_kWh*kwh_agg
+# $10,265</code></pre>
+<ul>
 <li>Environmental Cost = $10265</li>
 </ul>
-<p><em>Note these benefits and costs are in dollars, not cents</em></p>
-<p>```</p>
 </div>
 <div id="question-3" class="section level3">
 <h3><strong>Question #3</strong></h3>
