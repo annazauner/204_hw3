@@ -37,7 +37,9 @@ Assumptions:
 - The marginal cost of producing a kWh of electricity is linear and has a price-intercept of 0.
 
 
-### **1. Marginal Externality Cost**
+### **Question #1**
+
+Calculating MEC
 
 Assumptions:
 - One kWh of electricity emits 0.85 pounds of CO2 
@@ -74,3 +76,77 @@ price_kWh
 Based on the calculations, the MEC per kWh of electricity is **0.0197**.
 
 git test
+
+
+### **Question #2**
+
+Calculating:
+
+a. Aggregate monthly demand for electricity
+b. Supply curve for electricity 
+c. Benefit to consumers and producers under status quo
+d. Environmental cost under status quo
+
+
+```{r}
+
+
+
+```
+
+### **Question #3**
+
+Calculating consumer benefit divide between "high" and "low" income consumers.
+
+```{r}
+
+```
+
+
+### **Question #4**
+
+Deriving the optimal electricity tax (cents per kWh) with interim SCC. 
+Assumptions:
+- Low income group experience disproportionate share of impacts from climate change
+- Climate externality is borne entirely by "low" income group
+
+Calculating effects of tax on:
+
+a. Amount of electricity produced and consumed
+b. Price of electricity
+c. Welfare of "high" income consumers
+d. Welfare of "low" income consumers
+
+```{r}
+
+```
+
+
+### **Question #5**
+
+Assumptions:
+- All tax revenue will be distributed to consumers in proportion to their pre-tax consumption
+- True SCC may be much higher than $51 (range: $51, $75, $100, $125, $150 per metric ton of CO2)
+
+Calculating effects of SCC-based electricity tax for:
+
+a. Welfare of "high" income consumers
+b. Welfare of "low" income consumers
+c. Electricity producers
+
+
+
+
+```{r}
+
+```
+
+
+
+### **Question #6**
+
+
+```{r}
+
+```
+
