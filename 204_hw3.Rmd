@@ -72,3 +72,5 @@ price_kWh
 ```
 
 Based on the calculations, the MEC per kWh of electricity is **0.0197**.
+
+git test
