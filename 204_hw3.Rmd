@@ -30,11 +30,16 @@ data1 <- read_csv(here("data","HW3_data.csv")) %>%
 The Biden Administration’s “interim” value is $51 per metric ton of CO2. In this analysis, we consider the distributional consequences of a household electricity tax based on the Social Cost of Carbon (SCC) to address the climate change problem.
 
 Assumptions:
-- Consumers can separated into two income groups: “high” and “low.” 
-- Price ($) and quantity (kWh) estimates of demand per month for the two groups. 
-- Initially, there is no tax on electricity consumption.
-- The current electricity price (without any taxes) is $.10 per kWh.
-- The marginal cost of producing a kWh of electricity is linear and has a price-intercept of 0.
+
+1. Consumers can separated into two income groups: “high” and “low.” 
+
+2. Price ($) and quantity (kWh) estimates of demand per month for the two groups. 
+
+3. Initially, there is no tax on electricity consumption.
+
+4. The current electricity price (without any taxes) is $.10 per kWh.
+
+5. The marginal cost of producing a kWh of electricity is linear and has a price-intercept of 0.
 
 
 ### **Question #1**
@@ -42,8 +47,10 @@ Assumptions:
 Calculating MEC
 
 Assumptions:
-- One kWh of electricity emits 0.85 pounds of CO2 
-- Interim value of $51 per metric ton of CO2 
+
+1. One kWh of electricity emits 0.85 pounds of CO2 
+
+2. Interim value of $51 per metric ton of CO2 
 
 ```{r}
 # PIVOT LONGER WIH INCOME AS VARIABLE 
@@ -87,12 +94,112 @@ b. Supply curve for electricity
 c. Benefit to consumers and producers under status quo
 d. Environmental cost under status quo
 
+**Low income demand** 
+
+```{r}
+# LM ESTIMATE FOR LOW INCOME
+
+demand_low <- lm(price_cents ~ kwh, income =='low', 
+                 data = data_long) 
+
+demand_low
+```
+
+**High income demand**
 
 ```{r}
 
+# LM ESTIMATE FOR HIGH INCOME
 
+demand_high <- lm(price_cents ~ kwh, income =='high',
+                  data = data_long) 
+
+demand_high
 
 ```
+
+
+**a. Aggregate monthly demand for electricity**
+
+Sum high and low demand curves horizontally to get aggregate demand curve:
+
+```{r}
+# MOVE Q TO ONE SIDE TO HORIZONTALLY SUMMIZE
+
+demand_low_flip <- lm(kwh ~ price_cents, income=='low', 
+                 data = data_long) 
+demand_high_flip <- lm(kwh ~ price_cents, income=='high',
+                  data = data_long) 
+
+# FIND AGG INTERCEPT AND SLOPE
+
+kwh_agg_int <- (demand_low_flip$coefficients[1]+
+                  demand_high_flip$coefficients[1])
+kwh_agg_slope <- (demand_low_flip$coefficients[2] +
+                    demand_high_flip$coefficients[2])
+
+# FIND DEMAND AGG FUNCTION
+
+demand_agg_p <- function(price_cents){kwh_agg_int +
+    kwh_agg_slope*(price_cents)}
+demand_agg_int <- kwh_agg_int/-kwh_agg_slope
+demand_agg_slope <- 1/kwh_agg_slope
+
+# AGG DEMAND FUNCTION: P = 30.5 - 0.000039Q
+
+demand_agg <- function(kwh){demand_agg_int + demand_agg_slope*kwh}
+```
+
+  *P = 30.5 - 0.000039Q*. 
+
+
+**b. Supply curve for electricity** 
+
+Now we need to calculate the supply curve for electricity. We already know that the current price is $0.10/kWh. We also know the MC for electricity is linear with a 0 intercept. 
+
+```{r}
+kwh_agg <- demand_agg_p(10)
+# 522128 kWh consumed at price of $0.10
+supply_slope <- 10/kwh_agg
+```
+
+Since we know the supply curve will pass through the aggregate demand curve at the level of demand for a price of $0.10/kwh, we can infer that the supply curve (or marginal cost per kWh of electricity) function is: 
+
+*P = 0.0000192Q*
+
+**c. Benefit to consumers and producers under status quo**
+
+
+From this, we can calculate consumer and producer surplus as well as environmental cost. 
+
+```{r}
+# CS needs Y intercept --> at 0 kWh, price would be $0.305
+# Note the conversion back to dollars 
+cs_baseline <- 0.5*kwh_agg*(0.305 - 0.10)
+# $53,518
+# PS easy, just go up to 10 and out to the kwh 
+ps_baseline <- 0.5*kwh_agg*0.10
+# $26,106
+# cost is rectangle 
+
+```
+
+- Consumer Benefit = $`r round(cs_baseline, 0)`
+- Producer Benefit = $`r round(ps_baseline, 0)`
+- Environmental Cost = $`r round(env_cost_baseline, 0)`
+
+
+**d. Environmental cost under status quo**
+
+
+```{r}
+env_cost_baseline <- price_kWh*kwh_agg
+# $10,265
+```
+
+- Environmental Cost = $`r round(env_cost_baseline, 0)`
+
+
 
 ### **Question #3**
 
