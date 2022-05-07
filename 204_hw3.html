@@ -362,7 +362,8 @@ pre code {
 
 
 <h1 class="title toc-ignore">ESM 204 HW 3</h1>
-<h4 class="date">Anna Zauner</h4>
+<h4 class="date">Anna Zauner, Kirsten White and Katherine
+Rosecrance</h4>
 
 </div>
 
@@ -570,7 +571,47 @@ than $51 (range: $51, $75, $100, $125, $150 per metric ton of CO2)</p>
 </div>
 <div id="question-6" class="section level3">
 <h3><strong>Question #6</strong></h3>
+<p>SANDY’S EXAMPLE CODE IF NEEDED</p>
+<p>df &lt;- read_csv(“G:/My
+Drive/0UCSB_EES/3TA_Material/S22_ESM204/Homework 3/HW3_data.csv”) %&gt;%
+select(-1) %&gt;% clean_names()</p>
+<p>model_demand_l &lt;- lm(price_cents ~ q_low_kwh, data=df)
+model_demand_h &lt;- lm(price_cents ~ q_high_kwh, data=df)</p>
 </div>
+</div>
+<div id="need-to-rearrange-the-parameter-to-get-qp" class="section level1">
+<h1>need to rearrange the parameter to get Q(P)!</h1>
+</div>
+<div id="qgg-qlowp-qlowh" class="section level1">
+<h1>Qgg = Qlow(P) + Qlow(h)</h1>
+</div>
+<div id="importantly-since-they-intercepts-are-different-we-know-that-qaggp-will-have-a-kink.-i-include-an-ifelse-statement-to-take" class="section level1">
+<h1>Importantly, since they-intercepts are different, we know that
+Qagg(P) will have a kink. I include an ifelse() statement to take</h1>
+</div>
+<div id="care-of-the-kink." class="section level1">
+<h1>care of the kink.</h1>
+</div>
+<div id="define-a-function-to-get-demand" class="section level1">
+<h1>define a function to get demand</h1>
+<p>demand &lt;- function(p, model){ q &lt;- (p - model<span class="math inline">\(coefficients[[1]])/model\)</span>coefficients[[2]]
+q &lt;- ifelse(q&lt;0,0,q) return(q) }</p>
+</div>
+<div id="for-each-p-level-return-estimated-aggregate-demand" class="section level1">
+<h1>for each p level, return estimated aggregate demand</h1>
+<p>demand_agg &lt;- function(p){ q &lt;- demand(p, model_demand_l) +
+demand(p, model_demand_h) return(q) }</p>
+<p>price = seq(0, 30, length.out = 100) Qagg &lt;- map(price,
+demand_agg) %&gt;% unlist()</p>
+<p>df&lt;- tibble(Qagg = Qagg, price = price)</p>
+<p>ggplot(df, aes(Qagg, price)) + geom_line()</p>
+</div>
+<div id="i-also-define-functions-for-calculating-the-consumer-surplus" class="section level1">
+<h1>I also define functions for calculating the consumer surplus:</h1>
+<p>CS &lt;- function(p, model){ q &lt;- demand(p, model) cs &lt;-
+0.5<em>(model$coefficients[[1]] - p)</em>q return(cs) }</p>
+<p>CS_agg &lt;- function(p){ cs &lt;- CS(p,model_demand_l) +
+CS(p,model_demand_h) return(cs)</p>
 </div>
 
 
