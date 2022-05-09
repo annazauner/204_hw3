@@ -124,7 +124,7 @@ demand_high
 Sum high and low demand curves horizontally to get aggregate demand curve:
 
 ```{r}
-# MOVE Q TO ONE SIDE TO HORIZONTALLY SUMMIZE
+# MOVE Q TO ONE SIDE TO HORIZONTALLY SUM
 
 demand_low_flip <- lm(kwh ~ price_cents, income=='low', 
                  data = data_long) 
@@ -208,13 +208,40 @@ price_kWh
 # $10,265
 ```
 
-- Environmental Cost = $`r round(env_cost_baseline, 0)`
+- Environmental Cost = $`r round(env_cost_base, 0)`
 
 
 
 ### **Question #3**
 
 Calculating consumer benefit divide between "high" and "low" income consumers.
+
+As calculated above, total consumer surplus is $53,518.
+This value is derived from an aggregate demand curve where 522,128 kWh will be consumed at price of $0.10/kWh. 
+
+To find the surplus differential between income groups, we use the current price and calculate the amount each group will consume at this level. 
+
+```{r}
+
+### We didn't create these equations eariler, so this code won't run 
+
+# low income demand function
+demand_low_f(10)
+#Low income gets 121,344 
+#demand_low$coefficients[1] --- intercept is 23.37
+cs_low <- 0.5*(.2337 - .10)*demand_low_f(10)
+# $8,112 CS for low income (note dollars/cents conversion)
+demand_high_f(10)
+#High gets 415,376
+#demand_high$coefficients[1] --- intercept is 31.61
+cs_high <- 0.5*(.3161-.10)*demand_high_f(10)
+# $44,881.3 CS for high income 
+```
+
+Consumer surplus for high income consumers is significantly higher than surplus for low income consumers. The disparity is as follows: 
+
+- Low-income CS: $`r round(cs_low, 0)`
+- High-income CS: $`r round(cs_high, 0)`
 
 ```{r}
 
