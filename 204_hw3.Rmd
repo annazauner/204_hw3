@@ -181,9 +181,9 @@ Now we need to calculate the supply curve for electricity. We already know that 
 
 #536,719.5 kWh @ $0.10 CALCULATED ABOVE, INTERCEPT IS 0 
 
-kwh_agg <- demand_agg(10)
+kWh <- demand_agg(10)
 
-supply_slope <- 10/kwh_agg
+supply_slope <- 10/kWh
 
 supply_slope
 
@@ -192,9 +192,6 @@ supply_slope
 
 The supply function is: **P = 0.0000186Q**
 
-Since we know the supply curve will pass through the aggregate demand curve at the level of demand for a price of $0.10/kwh, we can infer that the supply curve (or marginal cost per kWh of electricity) function is: 
-
-*P = 0.0000192Q*
 
 **c. Benefit to consumers and producers under status quo**
 
