@@ -168,10 +168,10 @@ agg_int <- demand_agg_eq$coefficients[1]
 agg_slope
 agg_int
 
-# Aggregate demand function is P = 29.78135 - 0.00004(Qagg)
+# AGG DEMAND FUNCTION is P = 29.78135 - 0.00004(Qagg) 
 ```
 
-
+Demand function of the aggregate demand is:  **P = 29.78135 - 0.00004(Qagg)** 
 
 
 ```{r}
