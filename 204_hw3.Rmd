@@ -181,9 +181,9 @@ Now we need to calculate the supply curve for electricity. We already know that 
 
 #536,719.5 kWh @ $0.10 CALCULATED ABOVE, INTERCEPT IS 0 
 
-kWh <- demand_agg(10)
+Qo_kWh <- demand_agg(10)
 
-supply_slope <- 10/kWh
+supply_slope <- 10/Qo_kWh
 
 supply_slope
 
@@ -200,11 +200,11 @@ From this, we can calculate consumer and producer surplus as well as environment
 ```{r}
 # CALC CONSUMER SURPLUS
 
-cs_base <- 0.5*Qo_kwh*(0.305 - 0.10)
+cs_base <- 0.5*Qo_kwh*(0.298 - 0.10)
 
 cs_base
 
-# $53,518
+# $51,680.66
 
 # CALC PRODUCER SURPLUS
 
