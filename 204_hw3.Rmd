@@ -243,26 +243,25 @@ Calculating consumer benefit divided between "high" and "low" income consumers g
 
 ```{r}
 
-#INTECEPT FROM LOW DEMAND CURVE 
+#PLUG IN INTECEPT FROM LOW DEMAND CURVE TO CALCULATE TRIANGLE
 
 cs_low <- 0.5*(.2337 - .10)*demand(10, demand_low)
 
 cs_low
 
-# $8,112 CS for low income (note dollars/cents conversion)
+# $8,111.84 CS LOW INCOME
 
-#INTECEPT FROM HIGH DEMAND CURVE 
+#PLUG IN INTECEPT FROM HIGH DEMAND CURVE TO CALCULATE TRIANGLE
 
 cs_high <- 0.5*(.3161-.10)*demand(10, demand_high)
-# $44,881.3 CS for high income 
+
+# $44,881.32 CS HIGH INCOME
 
 cs_high
 ```
 
-Consumer surplus for high income consumers is significantly higher than surplus for low income consumers. The disparity is as follows: 
+Consumer surplus for the high-income group ($`r round(cs_low, 0)`) is significantly larger than the consumer surplus for the low-income group ( $`r round(cs_high, 0)`) 
 
-- Low-income CS: $`r round(cs_low, 0)`
-- High-income CS: $`r round(cs_high, 0)`
 
 ```{r}
 # ?
