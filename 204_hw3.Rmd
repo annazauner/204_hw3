@@ -12,6 +12,7 @@ library(janitor)
 library(thematic)
 library(scales)
 library(equatiomatic)
+library(rootSolve)
 thematic::thematic_rmd()
 thematic::thematic_on()
 ```
@@ -124,6 +125,34 @@ demand_high
 Sum high and low demand curves horizontally to get aggregate demand curve:
 
 ```{r}
+
+# DEMAND AGG 
+
+# need to rearrange the parameter to get Q(P)! 
+
+# Qgg = Qlow(P) + Qlow(h) 
+
+# Importantly, since they-intercepts are different, we know that Qagg(P) will have a kink. I include an ifelse() statement to take
+# care of the kink.
+
+# define a function to get demand
+
+demand <- function(p, model){
+  q <- (p - model$coefficients[[1]])/model$coefficients[[2]]
+  q <- ifelse(q<0,0,q)
+  return(q)}
+
+demand_agg <- function(p){
+  q <- demand(p, demand_low) + demand(p, demand_high)
+  return(q)}
+
+demand_agg(10)
+
+# 536719.50 Kwh at $0.10
+
+```
+
+```{r}
 # MOVE Q TO ONE SIDE TO HORIZONTALLY SUM
 
 demand_low_flip <- lm(kwh ~ price_cents, income=='low', 
@@ -148,7 +177,7 @@ kwh_agg_slope
 
 # FIND DEMAND AGG FUNCTION
 
-demand_agg_p <- function(price_cents){kwh_agg_int + kwh_agg_slope*(price_cents)}
+demand_agg_p <- function(price_cents){kwh_agg_slope*(price_cents)+ kwh_agg_int}
 
 demand_agg_int <- kwh_agg_int/-kwh_agg_slope
 
@@ -157,8 +186,8 @@ demand_agg_slope <- 1/kwh_agg_slope
 # AGG DEMAND FUNCTION: P = 30.5 - 0.000039Q
 
 demand_agg <- function(kwh){demand_agg_int + demand_agg_slope*kwh}
-
 ```
+
 
   *P = 30.5 - 0.000039Q*. 
 
@@ -180,7 +209,6 @@ Since we know the supply curve will pass through the aggregate demand curve at t
 *P = 0.0000192Q*
 
 **c. Benefit to consumers and producers under status quo**
-
 
 From this, we can calculate consumer and producer surplus as well as environmental cost. 
 
