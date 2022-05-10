@@ -218,8 +218,8 @@ ps_base
 
 ```
 
-- Consumer Benefit = $`r round(cs_base, 0)`
-- Producer Benefit = $`r round(ps_base, 0)`
+Consumer Benefit is calculated as $`r round(cs_base, 0)`
+Producer Benefit is calculated as $`r round(ps_base, 0)`
 
 
 
@@ -227,11 +227,11 @@ ps_base
 
 
 ```{r}
-env_cost_base <- price_kWh*Qo_kwh
+env_cost_base <- price_kWh*Qo_kWh
 
 env_cost_base
 
-# $10,265
+# $10,551.83
 ```
 
 - Environmental Cost = $`r round(env_cost_base, 0)`
