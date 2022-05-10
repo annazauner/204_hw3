@@ -173,59 +173,24 @@ agg_int
 
 Demand function of the aggregate demand is:  **P = 29.78135 - 0.00004(Qagg)** 
 
-
-```{r}
-# OLD OLD OLD 
-#MOVE Q TO ONE SIDE TO HORIZONTALLY SUM
-
-demand_low_flip <- lm(kwh ~ price_cents, income=='low', 
-                 data = data_long) 
-demand_high_flip <- lm(kwh ~ price_cents, income=='high',
-                  data = data_long) 
-
-demand_low_flip
-
-demand_high_flip
-
-# FIND AGG INTERCEPT AND SLOPE
-
-kwh_agg_int <- (demand_low_flip$coefficients[1]+
-                  demand_high_flip$coefficients[1])
-kwh_agg_slope <- (demand_low_flip$coefficients[2] +
-                    demand_high_flip$coefficients[2])
-
-kwh_agg_int
-
-kwh_agg_slope
-
-# FIND DEMAND AGG FUNCTION
-
-demand_agg_p <- function(price_cents){kwh_agg_slope*(price_cents)+ kwh_agg_int}
-
-demand_agg_int <- kwh_agg_int/-kwh_agg_slope
-
-demand_agg_slope <- 1/kwh_agg_slope
-
-# AGG DEMAND FUNCTION: P = 30.5 - 0.000039Q
-
-demand_agg <- function(kwh){demand_agg_int + demand_agg_slope*kwh}
-```
-
-
-  *P = 30.5 - 0.000039Q*. 
-
-
 **b. Supply curve for electricity** 
 
 Now we need to calculate the supply curve for electricity. We already know that the current price is $0.10/kWh. We also know the MC for electricity is linear with a 0 intercept. 
 
 ```{r}
-Qo_kwh <- demand_agg_p(10)
 
-# Qo = 522128 kWh 
+#536,719.5 kWh @ $0.10 CALCULATED ABOVE, INTERCEPT IS 0 
 
-supply_slope <- 10/Qo_kwh
+kwh_agg <- demand_agg(10)
+
+supply_slope <- 10/kwh_agg
+
+supply_slope
+
+# SUPPLY FUNCTION is P = 0.0000186Q
 ```
+
+The supply function is: **P = 0.0000186Q**
 
 Since we know the supply curve will pass through the aggregate demand curve at the level of demand for a price of $0.10/kwh, we can infer that the supply curve (or marginal cost per kWh of electricity) function is: 
 
