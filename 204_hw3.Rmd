@@ -72,7 +72,7 @@ price_lb <- price_ton/2205
 
 price_lb
 
-# Multiply by 0.85 to get MEC/kWh
+# UNIT CONVERSION 0.85 to get MEC/kWh
 
 price_kWh <- price_lb*0.85
 
@@ -131,6 +131,10 @@ demand_low_flip <- lm(kwh ~ price_cents, income=='low',
 demand_high_flip <- lm(kwh ~ price_cents, income=='high',
                   data = data_long) 
 
+demand_low_flip
+
+demand_high_flip
+
 # FIND AGG INTERCEPT AND SLOPE
 
 kwh_agg_int <- (demand_low_flip$coefficients[1]+
@@ -138,16 +142,22 @@ kwh_agg_int <- (demand_low_flip$coefficients[1]+
 kwh_agg_slope <- (demand_low_flip$coefficients[2] +
                     demand_high_flip$coefficients[2])
 
+kwh_agg_int
+
+kwh_agg_slope
+
 # FIND DEMAND AGG FUNCTION
 
-demand_agg_p <- function(price_cents){kwh_agg_int +
-    kwh_agg_slope*(price_cents)}
+demand_agg_p <- function(price_cents){kwh_agg_int + kwh_agg_slope*(price_cents)}
+
 demand_agg_int <- kwh_agg_int/-kwh_agg_slope
+
 demand_agg_slope <- 1/kwh_agg_slope
 
 # AGG DEMAND FUNCTION: P = 30.5 - 0.000039Q
 
 demand_agg <- function(kwh){demand_agg_int + demand_agg_slope*kwh}
+
 ```
 
   *P = 30.5 - 0.000039Q*. 
@@ -158,11 +168,11 @@ demand_agg <- function(kwh){demand_agg_int + demand_agg_slope*kwh}
 Now we need to calculate the supply curve for electricity. We already know that the current price is $0.10/kWh. We also know the MC for electricity is linear with a 0 intercept. 
 
 ```{r}
-kwh_agg <- demand_agg_p(10)
+Qo_kwh <- demand_agg_p(10)
 
 # Qo = 522128 kWh 
 
-supply_slope <- 10/kwh_agg
+supply_slope <- 10/Qo_kwh
 ```
 
 Since we know the supply curve will pass through the aggregate demand curve at the level of demand for a price of $0.10/kwh, we can infer that the supply curve (or marginal cost per kWh of electricity) function is: 
@@ -177,14 +187,15 @@ From this, we can calculate consumer and producer surplus as well as environment
 ```{r}
 # CALC CONSUMER SURPLUS
 
-cs_base <- 0.5*kwh_agg*(0.305 - 0.10)
+cs_base <- 0.5*Qo_kwh*(0.305 - 0.10)
 
 cs_base
+
 # $53,518
 
 # CALC PRODUCER SURPLUS
 
-ps_base <- 0.5*kwh_agg*0.10
+ps_base <- 0.5*Qo_kwh*0.10
 
 ps_base
 # $26,106
@@ -201,9 +212,9 @@ ps_base
 
 
 ```{r}
-env_cost_base <- price_kWh*kwh_agg
+env_cost_base <- price_kWh*Qo_kwh
 
-price_kWh
+env_cost_base
 
 # $10,265
 ```
@@ -217,6 +228,7 @@ price_kWh
 Calculating consumer benefit divide between "high" and "low" income consumers.
 
 ```{r}
+# ?
 
 ```
 
@@ -234,8 +246,61 @@ a. Amount of electricity produced and consumed
 b. Price of electricity
 c. Welfare of "high" income consumers
 d. Welfare of "low" income consumers
+e. Power suppliers 
+f. Total environmental damage
+g. Tax revenue generated
 
 ```{r}
+
+# a. Amount of electricity produced and consumed
+
+# OPTIMAL TAX is P of  MEC at Qo 
+
+# ADD OPTIMAL TAX TO SUPPLY FUNCTION
+
+#FIND Q* BY SETTING DEMAND AGG EQUAL TO SUPPLY+MEC
+
+
+
+# b. Price of electricity
+
+# FIND P* BY PLUGGING Q* INTO DEMAND AGG 
+
+
+
+#c. Welfare of "high" income consumers
+
+# FIND Q HIGH INCOME BY PLUGGING IN P* 
+
+# USE NEW Q FOR HIGH INCOME TO CALCULATE WELFARE
+
+
+
+#d. Welfare of "low" income consumers
+
+# FIND Q LOW INCOME BY PLUGGING IN P* 
+
+# USE NEW Q FOR HIGH INCOME TO CALCULATE WELFARE
+
+
+
+# e. Power suppliers 
+
+# FIND NEW P FOR SUPPLIERS GIVEN Q*
+
+
+
+
+# f. Total environmental damage
+
+# P* of MEC (0.019) TIMES Q*
+
+
+
+# g. Tax revenue generated
+
+# P* TIMES Q*
+
 
 ```
 
@@ -251,7 +316,6 @@ Calculating effects of SCC-based electricity tax for:
 a. Welfare of "high" income consumers
 b. Welfare of "low" income consumers
 c. Electricity producers
-
 
 
 
