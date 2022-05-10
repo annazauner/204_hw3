@@ -206,7 +206,7 @@ cs_base <- 0.5*Qo_kWh*(0.298 - 0.10)
 
 cs_base
 
-# $51,690.66
+# $53135.23
 
 # CALC PRODUCER SURPLUS
 
@@ -214,8 +214,7 @@ ps_base <- 0.5*Qo_kWh*0.10
 
 ps_base
 
-# $26,106.39
-
+# $26,835.97
 
 ```
 
