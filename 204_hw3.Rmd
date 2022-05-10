@@ -185,6 +185,8 @@ Qo_kWh <- demand_agg(10)
 
 supply_slope <- 10/Qo_kWh
 
+Qo_kWh
+
 supply_slope
 
 # SUPPLY FUNCTION is P = 0.0000186Q
@@ -200,18 +202,19 @@ From this, we can calculate consumer and producer surplus as well as environment
 ```{r}
 # CALC CONSUMER SURPLUS
 
-cs_base <- 0.5*Qo_kwh*(0.298 - 0.10)
+cs_base <- 0.5*Qo_kWh*(0.298 - 0.10)
 
 cs_base
 
-# $51,680.66
+# $51,690.66
 
 # CALC PRODUCER SURPLUS
 
-ps_base <- 0.5*Qo_kwh*0.10
+ps_base <- 0.5*Qo_kWh*0.10
 
 ps_base
-# $26,106
+
+# $26,106.39
 
 
 ```
