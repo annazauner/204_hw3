@@ -260,13 +260,7 @@ cs_high <- 0.5*(.3161-.10)*demand(10, demand_high)
 cs_high
 ```
 
-Consumer surplus for the high-income group ($`r round(cs_low, 0)`) is significantly larger than the consumer surplus for the low-income group ( $`r round(cs_high, 0)`) 
-
-
-```{r}
-# ?
-
-```
+Consumer surplus for the high-income group **($`r round(cs_low, 0)`)** is significantly larger than the consumer surplus for the low-income group **( $`r round(cs_high, 0)`)** 
 
 
 ### **Question #4**
