@@ -153,7 +153,30 @@ demand_agg(10)
 ```
 
 ```{r}
-# MOVE Q TO ONE SIDE TO HORIZONTALLY SUM
+# LM FROM VECTOR 
+price = seq(0, 30, length.out = 100)
+Qagg <- map(price, demand_agg) %>% 
+  unlist()
+agg_df<- tibble(Qagg = Qagg, price = price)
+demand_agg_eq <- lm(price ~ Qagg, data = agg_df) 
+extract_eq(model = demand_agg_eq, use_coefs = TRUE, coef_digits = 5)
+
+# SWITCH Q ON ONE SIDE OF EQUATION
+agg_slope <- demand_agg_eq$coefficients[2]
+agg_int <- demand_agg_eq$coefficients[1]
+
+agg_slope
+agg_int
+
+# Aggregate demand function is P = 29.78135 - 0.00004(Qagg)
+```
+
+
+
+
+```{r}
+# OLD OLD OLD 
+#MOVE Q TO ONE SIDE TO HORIZONTALLY SUM
 
 demand_low_flip <- lm(kwh ~ price_cents, income=='low', 
                  data = data_long) 
