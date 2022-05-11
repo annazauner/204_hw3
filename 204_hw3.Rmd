@@ -445,11 +445,6 @@ g. Tax revenue generated
  
 $ **($`r round(tax_rev, 2)`)**
 
-
- - Welfare of low income consumers: 6,622.60 USD surplus minus a cumulative external cost of 9,854.20 USD borne entirely by low-income consumers results in a **net loss of 3,231.60 USD**
-
-```
-
 ### **Question #5**
 
 Assumptions:
@@ -472,8 +467,28 @@ c. Electricity producers
 
 ### **Question #6**
 
+Suppose the “high” income group has access to expensive home solar generation. This lowers
+the electricity demand curve for the “high” income group by half (vertically). Under this new
+demand:
+
+a. What is total electricity consumption?
+
+b. What is the total environmental externality?
+
+c. What value of the electricity tax makes the total environmental damage the same as the
+damage when solar panels are available to the high income group?
+
 
 ```{r}
+#a. What is total electricity consumption?
+
+
+#b. What is the total environmental externality?
+
+#c. What value of the electricity tax makes the total environmental damage the same as the
+#damage when solar panels are available to the high income group?
+
+# Demand function with solar and SCC at 51
 
 ```
 
