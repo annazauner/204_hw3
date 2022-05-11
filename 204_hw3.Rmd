@@ -335,6 +335,77 @@ g. Tax revenue generated
 ```
 
 
+
+```{r}
+mpc_q <- function(p) {p/supply_slope} # MPC in terms of Q
+
+# DEMAND FUNCTION WITH TAX (SOLVED IN #1 MEC = $0.01965986 -> 1.97 cents)
+
+dem_tax <- function(p, model){
+  q <- (p - (model$coefficients[[1]]-1.97))/model$coefficients[[2]]
+  q <- ifelse(q<0,0,q)
+  return(q)
+}
+# AGG DEMAND FUNCTION w/ TAX
+dem_agg_tax <- function(p){
+  q <- dem_tax(p, demand_low) + dem_tax(p, demand_high)
+  return(q)
+}
+
+# NEW EQUILIBRIUM 
+
+uniroot(function(p)
+  dem_agg_tax(p) - mpc_q(p),
+        interval = c(0,20))
+
+# a. Amount of electricity produced and consumed
+
+# b. Price of electricity
+
+#save new p
+p_tax <- 9.31988
+
+#generate new Q
+q_tax <- dem_agg_tax(p_tax)
+
+q_tax
+
+#c. Welfare of "high" income consumers
+
+demand_high_tax <- dem_tax(p_tax, demand_high)
+cs_high_tax <- (0.5 * (.3161 - 0.0197 - 0.0932) * demand_high_tax) - (demand_high_tax * 0.0197)
+
+cs_high_tax
+```
+
+a. Amount of electricity produced and consumed
+
+New quantity of electricity: ** ($`r round(q_tax, 2)`)**
+
+b. Price of electricity
+
+New equilibrium price of electricity:  ** ($`r round(p_tax, 2)`)**
+
+c. Welfare of "high" income consumers
+
+
+
+d. Welfare of "low" income consumers
+e. Power suppliers 
+f. Total environmental damage
+g. Tax revenue generated
+ 
+ 
+
+ - Welfare of high income consumers: **39,676.40 USD**
+ - Welfare of low income consumers: 6,622.60 USD surplus minus a cumulative external cost of 9,854.20 USD borne entirely by low-income consumers results in a **net loss of 3,231.60 USD**
+ - Welfare of power suppliers (i.e. producers): **23,310.37 USD**
+ - Total environmental damage: MEC times quantity produced = **9,854.20 USD**
+ - Total tax revenue generated: size of the tax = MEC. So the total tax revenue generated will also be **9,854.20 USD**
+ 
+ 
+```
+
 ### **Question #5**
 
 Assumptions:
