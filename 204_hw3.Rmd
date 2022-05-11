@@ -373,37 +373,81 @@ q_tax
 #c. Welfare of "high" income consumers
 
 demand_high_tax <- dem_tax(p_tax, demand_high)
-cs_high_tax <- (0.5 * (.3161 - 0.0197 - 0.0932) * demand_high_tax) - (demand_high_tax * 0.0197)
+cs_high_tax <- (0.5 * (.3161 - 0.0197 - (p_tax/100)) * demand_high_tax) - (demand_high_tax * 0.0197)
 
 cs_high_tax
+
+# d DOES NOT MAKE SENSE NEED HELP!!!!!!!!!!!
+
+#d. Welfare of "low" income consumers
+
+cs_low_tax_og <- cs_low - env_cost_base
+demand_low_tax <- demand(p_tax, demand_low)
+#Below is the total env cost at the new level of consumption
+env_cost_tax <- price_kWh * q_tax
+cs_low_tax <- (0.5 * (.2337 - 0.0197 - 0.0932) * demand_low_tax) - (demand_low_tax * 0.0197) - env_cost_tax
+
+cs_low_tax
+
+
+# e. Power suppliers 
+
+# FIND NEW P FOR SUPPLIERS GIVEN Q*
+
+q_tax <- dem_agg_tax(p_tax)
+
+ps_tax <- 0.5*q_tax*0.0932
+
+ps_tax
+
+# f. Total environmental damage
+
+# P* of MEC (0.0197) TIMES Q*
+
+env_change <- env_cost_base - env_cost_tax
+
+env_change
+
+# g. Tax revenue generated
+
+# P* TIMES Q*
+
+tax_rev <- price_kWh*q_tax
+
+tax_rev
 ```
 
 a. Amount of electricity produced and consumed
 
-New quantity of electricity: ** ($`r round(q_tax, 2)`)**
+New quantity of electricity: **($`r round(q_tax, 2)`)**
 
 b. Price of electricity
 
-New equilibrium price of electricity:  ** ($`r round(p_tax, 2)`)**
+New equilibrium price of electricity:  **($`r round(p_tax, 2)`)**
 
 c. Welfare of "high" income consumers
 
+$ **($`r round(cs_high_tax, 2)`)**
 
+d. Welfare of "low" income consumers 
 
-d. Welfare of "low" income consumers
-e. Power suppliers 
+Decrease to: EDIT NEEDED $ **($`r round(welfare_low_tax, 2)`)**
+
+e. Power suppliers surplus
+
+Decrease to: $ **($`r round(ps_tax, 2)`)**
+
 f. Total environmental damage
+
+Decreases : $ **($`r round(env_change, 2)`)**
+
 g. Tax revenue generated
  
- 
+$ **($`r round(tax_rev, 2)`)**
 
- - Welfare of high income consumers: **39,676.40 USD**
+
  - Welfare of low income consumers: 6,622.60 USD surplus minus a cumulative external cost of 9,854.20 USD borne entirely by low-income consumers results in a **net loss of 3,231.60 USD**
- - Welfare of power suppliers (i.e. producers): **23,310.37 USD**
- - Total environmental damage: MEC times quantity produced = **9,854.20 USD**
- - Total tax revenue generated: size of the tax = MEC. So the total tax revenue generated will also be **9,854.20 USD**
- 
- 
+
 ```
 
 ### **Question #5**
