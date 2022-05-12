@@ -458,6 +458,35 @@ welfare_low_51
 
 ```
 
+```{r}
+demand_scc <- function(p, model, scc){
+  q <- (p - (model$coefficients[[1]] - tax_list[scc]))/model$coefficients[[2]]
+  q <- ifelse(q<0,0,q)
+  return(q)
+} 
+demand_agg_75 <- function(p){
+  q <- demand_scc(p, demand_low, 1) + demand_scc(p, demand_high, 1)
+  return(q)
+}
+p_75 <- uniroot(function(p)
+  demand_agg_75(p) - mpc_q(p),
+  interval = c(0,20))
+#Gives new P of 9.002
+demand_75 <- demand_agg_75(p_75$root)
+revenue_damage_75 <- demand_75*.0289
+#Low Income @ $75
+demand_low_75 <- demand_scc(p_75$root, demand_low, 1)
+cs_low_75 <- (0.5*demand_low_75*(demand_low$coefficients[1]-tax_75-p_75$root))/100
+# Welfare is CS - tax + money back 
+welfare_low_75 <- cs_low_75 - (demand_low_75 * .0289) - revenue_damage_75 + low_use_percentage*revenue_damage_75
+              
+# High Income @$75
+demand_high_75 <- demand_scc(p_75$root, demand_high, 1)
+cs_high_75 <- (0.5*demand_high_75*(demand_high$coefficients[1]-tax_75-p_75$root))/100
+welfare_high_75 <- cs_high_75 - (demand_high_75*0.0289) + high_use_percentage*revenue_damage_75
+# Producer @ $75
+ps_75 <- 0.5*demand_75*(p_75$root/100)
+```
 
 
 SCC of $51:
