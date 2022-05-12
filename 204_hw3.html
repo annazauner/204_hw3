@@ -9,7 +9,9 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
+<meta name="author" content="Anna Zauner, Kirsten White and Katherine Rosencrance" />
 
+<meta name="date" content="2022-05-11" />
 
 <title>ESM 204 Homework 3</title>
 
@@ -362,8 +364,9 @@ pre code {
 
 
 <h1 class="title toc-ignore">ESM 204 Homework 3</h1>
-<h4 class="date">Anna Zauner, Kirsten White and Katherine
+<h4 class="author">Anna Zauner, Kirsten White and Katherine
 Rosencrance</h4>
+<h4 class="date">May 11, 2022</h4>
 
 </div>
 
@@ -610,54 +613,6 @@ by “low” income group</p>
 <li>Total environmental damage</li>
 <li>Tax revenue generated</li>
 </ol>
-<pre class="r"><code># a. Amount of electricity produced and consumed
-
-# OPTIMAL TAX is P of  MEC at Qo 
-
-# ADD OPTIMAL TAX TO SUPPLY FUNCTION
-
-#FIND Q* BY SETTING DEMAND AGG EQUAL TO SUPPLY+MEC
-
-
-
-# b. Price of electricity
-
-# FIND P* BY PLUGGING Q* INTO DEMAND AGG 
-
-
-
-#c. Welfare of &quot;high&quot; income consumers
-
-# FIND Q HIGH INCOME BY PLUGGING IN P* 
-
-# USE NEW Q FOR HIGH INCOME TO CALCULATE WELFARE
-
-
-
-#d. Welfare of &quot;low&quot; income consumers
-
-# FIND Q LOW INCOME BY PLUGGING IN P* 
-
-# USE NEW Q FOR HIGH INCOME TO CALCULATE WELFARE
-
-
-
-# e. Power suppliers 
-
-# FIND NEW P FOR SUPPLIERS GIVEN Q*
-
-
-
-
-# f. Total environmental damage
-
-# P* of MEC (0.019) TIMES Q*
-
-
-
-# g. Tax revenue generated
-
-# P* TIMES Q*</code></pre>
 <pre class="r"><code>mpc_q &lt;- function(p) {p/supply_slope} # MPC in terms of Q
 
 # DEMAND FUNCTION WITH TAX (SOLVED IN #1 MEC = $0.01965986 -&gt; 1.97 cents)
@@ -711,12 +666,11 @@ cs_high_tax &lt;- (0.5 * (.3161 - 0.0197 - (p_tax/100)) * demand_high_tax) - (de
 
 cs_high_tax</code></pre>
 <pre><code>## [1] 31988.62</code></pre>
-<pre class="r"><code># d DOES NOT MAKE SENSE NEED HELP!!!!!!!!!!!
-
-#d. Welfare of &quot;low&quot; income consumers
+<pre class="r"><code>#d. Welfare of &quot;low&quot; income consumers
 
 cs_low_tax_og &lt;- cs_low - env_cost_base
 demand_low_tax &lt;- demand(p_tax, demand_low)
+
 # LOW INCOME REDUCE DAMAGE, TAX and INITIAL CS LOW
 env_cost_tax &lt;- price_kWh * q_tax
 cs_low_tax &lt;- (0.5 * (.2337 - 0.0197 - 0.0932) * demand_low_tax) - (demand_low_tax * 0.0197) - env_cost_tax
@@ -878,13 +832,7 @@ income group by half (vertically). Under this new demand:</p>
 damage the same as the damage when solar panels are available to the
 high income group?</p></li>
 </ol>
-<pre class="r"><code>#a. What is total electricity consumption?
-
-
-#b. What is the total environmental externality?
-
-#c. What value of the electricity tax makes the total environmental damage the same as the
-#damage when solar panels are available to the high income group?
+<pre class="r"><code>#QUESTION 6 SET UP
 
 # DEMAND FUNCTIONS w/ SOLAR AT 51
 dem_high_solar &lt;- function(p){
@@ -901,8 +849,9 @@ dem_low_solar &lt;- function(p){
 dem_agg_solar &lt;- function(p){
   q &lt;- dem_high_solar(p) + dem_low_solar(p)
   return(q)
-}</code></pre>
-<pre class="r"><code># NEW EQUILIBRIUM PRCICE
+}
+
+# NEW EQUILIBRIUM PRCICE
 
 mpc_slope &lt;- (10/Qo_kWh)
 
@@ -910,7 +859,22 @@ mpc_q &lt;- function(p) {p/mpc_slope}
 
 uniroot(function(p)
   dem_agg_solar(p) - mpc_q(p),
-        interval = c(0,20))
+        interval = c(0,20))</code></pre>
+<pre><code>## $root
+## [1] 5.844611
+## 
+## $f.root
+## [1] 0
+## 
+## $iter
+## [1] 2
+## 
+## $init.it
+## [1] NA
+## 
+## $estim.prec
+## [1] 5.844611</code></pre>
+<pre class="r"><code>#a. What is total electricity consumption?
 
 # Q OF ELECTRICITY CONSUMED
 
@@ -918,12 +882,16 @@ solar_electricity &lt;- mpc_q(5.84)
 
 solar_electricity
 
+#b. What is the total environmental externality?
+
 # TOTAL ENVIRO EXTERNAILITY (Q * MEC of 1.97 cents)
 
 env_cost_solar &lt;- mpc_q(5.84)*(0.0197)
 
 env_cost_solar
 
+#c. What value of the electricity tax makes the total environmental damage the same as the
+#damage when solar panels are available to the high income group?
 
 # SCC WHEN EQUAL TO SOLAR EQUATION FOR DAMAGE
 

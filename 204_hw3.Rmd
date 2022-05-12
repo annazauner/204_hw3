@@ -1,8 +1,12 @@
 ---
 title: "ESM 204 Homework 3"
+author: 'Anna Zauner, Kirsten White and Katherine Rosencrance'
+date: "May 11, 2022"
 output: html_document
-date: 'Anna Zauner, Kirsten White and Katherine Rosencrance'
+
+
 ---
+
 
 ```{r setup, include=TRUE, message=FALSE, warning=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
@@ -424,6 +428,8 @@ tax_150 <- 0.0578  # 5.78 dollars /kwh
 
 tax_list <- c(0.0197, 0.0289, 0.0386, 0.0482, 0.0578) # list of tax at each SCC scenario
 
+# SCC 51 SCENARIO
+
 # How much do each income levels use out of the total? (% of total)
 high_use_percentage <- demand(10, demand_high)/Qo_kWh #77%
 low_use_percentage <- demand(10, demand_low)/Qo_kWh #23%
@@ -446,8 +452,13 @@ welfare_high_51
 
 welfare_low_51
 
+# c. Electricity producers
+
+
 
 ```
+
+
 
 SCC of $51:
 
@@ -603,6 +614,8 @@ solar_tax_final
 
 
 - Quantity of electricity consumed: **313,444 kWh**
+
 - Total cost of environmental damages: **$6174.85**
+
 - Value of electricity tax: **$0.03**
 
