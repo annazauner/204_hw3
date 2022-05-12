@@ -322,7 +322,7 @@ q_tax
 #c. Welfare of "high" income consumers
 
 demand_high_tax <- dem_tax(p_tax, demand_high)
-cs_high_tax <- (0.5 * (.3161 - price_kWh - (p_tax/100)) * demand_high_tax) - (demand_high_tax * price_kWh)
+cs_high_tax <- (0.5 * (.3161 - 0.0197 - (p_tax/100)) * demand_high_tax) - (demand_high_tax * 0.0197)
 
 cs_high_tax
 
@@ -332,9 +332,8 @@ cs_low_tax_og <- cs_low - env_cost_base
 demand_low_tax <- demand(p_tax, demand_low)
 
 # LOW INCOME REDUCE DAMAGE, TAX and INITIAL CS LOW
-
 env_cost_tax <- price_kWh * q_tax
-cs_low_tax <- (0.5 * (.2337 - price_kWh - (p_tax/100)) * demand_low_tax) - (demand_low_tax * price_kWh) - env_cost_tax
+cs_low_tax <- (0.5 * (.2337 - 0.0197 - 0.0932) * demand_low_tax) - (demand_low_tax * 0.0197) - env_cost_tax
 
 cs_low_tax
 
@@ -345,7 +344,7 @@ cs_low_tax
 
 q_tax <- dem_agg_tax(p_tax)
 
-ps_tax <- 0.5*q_tax*(p_tax/100)
+ps_tax <- 0.5*q_tax*0.0932
 
 ps_tax
 
@@ -353,13 +352,9 @@ ps_tax
 
 # P* of MEC (0.0197) TIMES Q*
 
-# PULL FROM PREVIOUS COST WITH TAX VALUE
+env_change <- env_cost_base - env_cost_tax
 
-env_cost_tax
-
-# DECREASED FROM BASE
-
-env_cost_base
+env_change
 
 # g. Tax revenue generated
 
@@ -394,7 +389,7 @@ Decrease to:  **$`r round(ps_tax, 0)`**
 
 f. Total environmental damage
 
-Decreases to: **$`r round(env_cost_tax, 0)`**
+Decreases to: **$`r round(env_change, 0)`**
 
 g. Tax revenue generated
  
@@ -458,12 +453,14 @@ welfare_high_51
 welfare_low_51
 
 # c. Electricity producers
-
+ps_tax <- 0.5*q_tax*0.0932
 
 
 ```
 
 ```{r}
+## SCC 75 SCENARIO
+
 demand_scc <- function(p, model, scc){
   q <- (p - (model$coefficients[[1]] - tax_list[scc]))/model$coefficients[[2]]
   q <- ifelse(q<0,0,q)
@@ -476,23 +473,57 @@ demand_agg_75 <- function(p){
 p_75 <- uniroot(function(p)
   demand_agg_75(p) - mpc_q(p),
   interval = c(0,20))
-#Gives new P of 9.002
+#NEW P=9.002
+
 demand_75 <- demand_agg_75(p_75$root)
 revenue_damage_75 <- demand_75*.0289
-#Low Income @ $75
+
+#LOW_75
 demand_low_75 <- demand_scc(p_75$root, demand_low, 1)
 cs_low_75 <- (0.5*demand_low_75*(demand_low$coefficients[1]-tax_75-p_75$root))/100
-# Welfare is CS - tax + money back 
+
+# WELFARE= CS-TAX+REBATE
 welfare_low_75 <- cs_low_75 - (demand_low_75 * .0289) - revenue_damage_75 + low_use_percentage*revenue_damage_75
               
-# High Income @$75
+# HIGH_75
 demand_high_75 <- demand_scc(p_75$root, demand_high, 1)
+
 cs_high_75 <- (0.5*demand_high_75*(demand_high$coefficients[1]-tax_75-p_75$root))/100
+
+#WELFARE=CS-TAX+REBATE
 welfare_high_75 <- cs_high_75 - (demand_high_75*0.0289) + high_use_percentage*revenue_damage_75
-# Producer @ $75
+
+# PS_75
 ps_75 <- 0.5*demand_75*(p_75$root/100)
 ```
 
+```{r}
+# SCC 100 SCENARIO
+
+demand_agg_100 <- function(p){
+  q <- demand_scc(p, demand_low, 2) + demand_scc(p, demand_high, 2)
+  return(q)
+}
+p_100 <- uniroot(function(p)
+  demand_agg_100(p) - mpc_q(p),
+  interval = c(0,20))
+#NEW P=8.667
+
+demand_100 <- demand_agg_100(p_100$root)
+revenue_damage_100 <- demand_100*.0386
+
+#LOW_100
+demand_low_100 <- demand_scc(p_100$root, demand_low, 2)
+cs_low_100 <- (0.5*demand_low_100*(demand_low$coefficients[1]-tax_100-p_100$root))/100
+welfare_low_100 <- cs_low_100 - (demand_low_100*0.0386) - revenue_damage_100 + low_use_percentage*revenue_damage_100
+              
+# High Income @$100
+demand_high_100 <- demand_scc(p_100$root, demand_high, 2)
+cs_high_100 <- (0.5*demand_high_100*(demand_high$coefficients[1]-tax_100-p_100$root))/100
+welfare_high_100 <- cs_high_100 - (demand_high_100*0.0386) + high_use_percentage*revenue_damage_100
+# Producer @ $100
+ps_100 <- 0.5*demand_100*(p_100$root/100)
+```
 
 SCC of $51:
 
