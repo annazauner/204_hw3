@@ -425,27 +425,27 @@ New quantity of electricity: **$`r round(q_tax, 2)`**
 
 b. Price of electricity
 
-New equilibrium price of electricity:  **$`r round(p_tax, 2)`**
+New equilibrium price of electricity:  **$`r round(p_tax, 3)`**
 
 c. Welfare of "high" income consumers
 
-Decreases to: **$`r round(cs_high_tax, 2)`**
+Decreases to: **$`r round(cs_high_tax, 0)`**
 
 d. Welfare of "low" income consumers 
 
-Decrease to: **$`r round(cs_low_tax, 2)`**
+Decrease to: **$`r round(cs_low_tax, 0)`**
 
 e. Power suppliers surplus
 
-Decrease to:  **$`r round(ps_tax, 2)`**
+Decrease to:  **$`r round(ps_tax, 0)`**
 
 f. Total environmental damage
 
-Decreases to: **$`r round(env_change, 2)`**
+Decreases to: **$`r round(env_change, 0)`**
 
 g. Tax revenue generated
  
-**$`r round(tax_rev, 2)`**
+Increase to: **$`r round(tax_rev, 0)`**
 
 ### **Question #5**
 
@@ -462,8 +462,59 @@ c. Electricity producers
 
 ```{r}
 
+# 1. Find different prices per kWh
+
+#   Reminder: - 1 kWh of electricity = 0.85 lb CO2
+#   1 metric ton = 2204.6 lbs. Thus 1 metric ton of CO2 is emitted    #   from 2204.6/0.85 = 2594 kWh of electricity
+
+# $75/ton - 75/(2594) = $0.0289/kWh
+# $100/ton - 100/(2594) = $0.0386/kWh
+# $125/ton - 125/(2594) = $0.0482/kWh
+# $150/ton - 150/(2594) = $0.0578/kWh
+
+tax_50 <- 0.0197 # 1.97 dollars/kwh
+tax_75 <- 0.0289 # 2.89 dollars/kwh
+tax_100 <- 0.0386  # 3.86 dollars/kwh
+tax_125 <- 0.0482  # 4.82 dollars/kwh
+tax_150 <- 0.0578  # 5.78 dollars /kwh
+
+tax_list <- c(0.0197, 0.0289, 0.0386, 0.0482, 0.0578) # list of tax at each SCC scenario
+
+# How much do each income levels use out of the total? (% of total)
+high_use_percentage <- demand(10, demand_high)/Qo_kWh #77%
+low_use_percentage <- demand(10, demand_low)/Qo_kWh #23%
+
+
+# a. Welfare to "high" income consumers
+#     High = high income % of CS + pre tax rebate
+#     (high) pre tax rebate = (q*high/q*high +q*low) x tax
+pretax_rebate_high <- high_use_percentage * tax_rev
+welfare_high_51 <- pretax_rebate_high + cs_low_tax
+welfare_high_51
+
+# b. Welfare to "low" income consumers
+#     Low = CS + pre tax rebate - [MEC x q~]
+#     (low) pre tax rebate = (q*low/q*high +q*low) x tax revenue (p~q~)
+pretax_rebate_low <- low_use_percentage * tax_rev
+welfare_low_51 <- pretax_rebate_high + cs_high_tax
+welfare_low_51
+
+
+
 ```
 
+SCC of $51:
+
+a. Welfare of "high" income consumers
+
+**$39599.45**
+
+
+b. Welfare of "low" income consumers
+
+**$2966.55**
+
+c. Electricity producers
 
 
 ### **Question #6**
