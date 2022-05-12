@@ -5,7 +5,7 @@ date: 'Anna Zauner, Kirsten White and Katherine Rosecrance'
 ---
 
 ```{r setup, include=TRUE, message=FALSE, warning=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, options(scipen = 999))
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 library(tidyverse)
 library(here)
 library(janitor)
@@ -83,8 +83,6 @@ price_kWh
 
 Based on the calculations, the MEC per kWh of electricity is **0.0197**.
 
-git test
-
 
 ### **Question #2**
 
@@ -159,7 +157,7 @@ Qagg <- map(price, demand_agg) %>%
   unlist()
 agg_df<- tibble(Qagg = Qagg, price = price)
 demand_agg_eq <- lm(price ~ Qagg, data = agg_df) 
-extract_eq(model = demand_agg_eq, use_coefs = TRUE, coef_digits = 5)
+
 
 # SWITCH Q ON ONE SIDE OF EQUATION
 agg_slope <- demand_agg_eq$coefficients[2]
@@ -171,7 +169,7 @@ agg_int
 # AGG DEMAND FUNCTION is P = 29.78135 - 0.00004(Qagg) 
 ```
 
-Demand function of the aggregate demand is:  **P = 29.78135 - 0.00004(Qagg)** 
+Demand function of the aggregate demand is:  **P = 29.78135 - 0.00004 (Qagg)** 
 
 **b. Supply curve for electricity** 
 
@@ -218,8 +216,9 @@ ps_base
 
 ```
 
-Consumer Benefit is calculated as $`r round(cs_base, 0)`
-Producer Benefit is calculated as $`r round(ps_base, 0)`
+- Consumer Benefit is calculated as **$53135.23**
+
+- Producer Benefit is calculated as **$26835.97**
 
 
 **d. Environmental cost under status quo**
@@ -233,12 +232,12 @@ env_cost_base
 # $10,551.83
 ```
 
-Environmental Cost calculated as $`r round(env_cost_base, 0)`
+Environmental Cost calculated as **$10551.83**
 
 
 ### **Question #3**
 
-Calculating consumer benefit divided between "high" and "low" income consumers given total consumer surplus is $`r round(cs_base, 0)` at price of $0.10 per kWh. 
+Calculating consumer benefit divided between "high" and "low" income consumers given total consumer surplus is $ 53135.23 at price of $0.10 per kWh. 
 
 
 ```{r}
@@ -260,7 +259,7 @@ cs_high <- 0.5*(.3161-.10)*demand(10, demand_high)
 cs_high
 ```
 
-Consumer surplus for the high-income group **($`r round(cs_low, 0)`)** is significantly larger than the consumer surplus for the low-income group **( $`r round(cs_high, 0)`)** 
+Consumer surplus for the high-income group **($`r round(cs_low, 0)`) ** is significantly larger than the consumer surplus for the low-income group **( $`r round(cs_high, 0)`)** 
 
 
 ### **Question #4**
@@ -368,7 +367,8 @@ p_tax <- 9.31988
 #generate new Q
 q_tax <- dem_agg_tax(p_tax)
 
-q_tax
+q_tax 
+
 
 #c. Welfare of "high" income consumers
 
@@ -383,7 +383,7 @@ cs_high_tax
 
 cs_low_tax_og <- cs_low - env_cost_base
 demand_low_tax <- demand(p_tax, demand_low)
-#Below is the total env cost at the new level of consumption
+# LOW INCOME REDUCE DAMAGE, TAX and INITIAL CS LOW
 env_cost_tax <- price_kWh * q_tax
 cs_low_tax <- (0.5 * (.2337 - 0.0197 - 0.0932) * demand_low_tax) - (demand_low_tax * 0.0197) - env_cost_tax
 
@@ -417,34 +417,35 @@ tax_rev <- price_kWh*q_tax
 tax_rev
 ```
 
+**Optimal Electricity Tax:** $ `r round(price_kWh, 4)` 
 
 a. Amount of electricity produced and consumed
 
-New quantity of electricity: ** ($`r round(q_tax, 2)`)**
+New quantity of electricity: **$`r round(q_tax, 2)`**
 
 b. Price of electricity
 
-New equilibrium price of electricity:  **($`r round(p_tax, 2)`)**
+New equilibrium price of electricity:  **$`r round(p_tax, 2)`**
 
 c. Welfare of "high" income consumers
 
-$ **($`r round(cs_high_tax, 2)`)**
+**$`r round(cs_high_tax, 2)`**
 
 d. Welfare of "low" income consumers 
 
-Decrease to: EDIT NEEDED $ **($`r round(cs_low_tax, 2)`)**
+Decrease to: **$`r round(cs_low_tax, 2)`**
 
 e. Power suppliers surplus
 
-Decrease to: $ **($`r round(ps_tax, 2)`)**
+Decrease to:  **$`r round(ps_tax, 2)`**
 
 f. Total environmental damage
 
-Decreases : $ **($`r round(env_change, 2)`)**
+Decreases to: **$`r round(env_change, 2)`**
 
 g. Tax revenue generated
  
-$ **($`r round(tax_rev, 2)`)**
+**$`r round(tax_rev, 2)`**
 
 ### **Question #5**
 
@@ -457,7 +458,6 @@ Calculating effects of SCC-based electricity tax for:
 a. Welfare of "high" income consumers
 b. Welfare of "low" income consumers
 c. Electricity producers
-
 
 
 ```{r}
@@ -489,8 +489,7 @@ damage when solar panels are available to the high income group?
 #c. What value of the electricity tax makes the total environmental damage the same as the
 #damage when solar panels are available to the high income group?
 
-# Demand function with solar and SCC at 51
-# Demand functions (high and low) with solar and SCC at 51
+# DEMAND FUNCTIONS w/ SOLAR AT 51
 dem_high_solar <- function(p){
   q <- (p - (demand_high$coefficients[[1]]-1.97)/2)/demand_high$coefficients[[2]]
   q <- ifelse(q<0,0,q)
@@ -501,7 +500,7 @@ dem_low_solar <- function(p){
   q <- ifelse(q<0,0,q)
   return(q)
 }
-# Creating an aggregate demand function
+# AGGREGATE DEMAND SOLAR
 dem_agg_solar <- function(p){
   q <- dem_high_solar(p) + dem_low_solar(p)
   return(q)
@@ -511,7 +510,7 @@ dem_agg_solar <- function(p){
 
 
 ```{r eval = FALSE}
-# Find the new equilibrium price (at the intersection agg demand and supply curve)
+# NEW EQUILIBRIUM PRCICE
 
 mpc_slope <- (10/Qo_kWh)
 
@@ -521,17 +520,26 @@ uniroot(function(p)
   dem_agg_solar(p) - mpc_q(p),
         interval = c(0,20))
 
-# Find quantity of electricity consumed
+# Q OF ELECTRICITY CONSUMED
 solar_electricity <- mpc_q(5.84)
 
 solar_electricity
 
-# Find the total environmental externality (Q * MEC of 1.97 cents)
-env_cost_solar <- mpc_q(5.84)*(1.97)
+# TOTAL ENVIRO EXTERNAILITY (Q * MEC of 1.97 cents)
+env_cost_solar <- mpc_q(5.84)*(0.0197)
 
 env_cost_solar
 
+
+# SCC WHEN EQUAL TO SOLAR EQUATION FOR DAMAGE
+
+solar_tax_final <- (.0197/(env_cost_solar/env_cost_tax))
+
+solar_tax_final
+
 ```
 
-- Quantity of electricity consumed: r round(solar_electricity, 2)` kWh
-- Total cost of environmental damages: $r round(solar_electricity, 2)`
+- Quantity of electricity consumed: **313,444 kWh**
+- Total cost of environmental damages: **$6174.85**
+- Value of electricity tax: **$0.03**
+
