@@ -1,7 +1,7 @@
 ---
-title: "ESM 204 HW 3"
+title: "ESM 204 Homework 3"
 output: html_document
-date: 'Anna Zauner, Kirsten White and Katherine Rosecrance'
+date: 'Anna Zauner, Kirsten White and Katherine Rosencrance'
 ---
 
 ```{r setup, include=TRUE, message=FALSE, warning=FALSE}
@@ -13,8 +13,7 @@ library(thematic)
 library(scales)
 library(equatiomatic)
 library(rootSolve)
-thematic::thematic_rmd()
-thematic::thematic_on()
+
 ```
 
 
@@ -279,60 +278,6 @@ e. Power suppliers
 f. Total environmental damage
 g. Tax revenue generated
 
-```{r}
-
-# a. Amount of electricity produced and consumed
-
-# OPTIMAL TAX is P of  MEC at Qo 
-
-# ADD OPTIMAL TAX TO SUPPLY FUNCTION
-
-#FIND Q* BY SETTING DEMAND AGG EQUAL TO SUPPLY+MEC
-
-
-
-# b. Price of electricity
-
-# FIND P* BY PLUGGING Q* INTO DEMAND AGG 
-
-
-
-#c. Welfare of "high" income consumers
-
-# FIND Q HIGH INCOME BY PLUGGING IN P* 
-
-# USE NEW Q FOR HIGH INCOME TO CALCULATE WELFARE
-
-
-
-#d. Welfare of "low" income consumers
-
-# FIND Q LOW INCOME BY PLUGGING IN P* 
-
-# USE NEW Q FOR HIGH INCOME TO CALCULATE WELFARE
-
-
-
-# e. Power suppliers 
-
-# FIND NEW P FOR SUPPLIERS GIVEN Q*
-
-
-
-
-# f. Total environmental damage
-
-# P* of MEC (0.019) TIMES Q*
-
-
-
-# g. Tax revenue generated
-
-# P* TIMES Q*
-
-
-```
-
 
 
 ```{r}
@@ -377,12 +322,11 @@ cs_high_tax <- (0.5 * (.3161 - 0.0197 - (p_tax/100)) * demand_high_tax) - (deman
 
 cs_high_tax
 
-# d DOES NOT MAKE SENSE NEED HELP!!!!!!!!!!!
-
 #d. Welfare of "low" income consumers
 
 cs_low_tax_og <- cs_low - env_cost_base
 demand_low_tax <- demand(p_tax, demand_low)
+
 # LOW INCOME REDUCE DAMAGE, TAX and INITIAL CS LOW
 env_cost_tax <- price_kWh * q_tax
 cs_low_tax <- (0.5 * (.2337 - 0.0197 - 0.0932) * demand_low_tax) - (demand_low_tax * 0.0197) - env_cost_tax
@@ -472,7 +416,7 @@ c. Electricity producers
 # $125/ton - 125/(2594) = $0.0482/kWh
 # $150/ton - 150/(2594) = $0.0578/kWh
 
-tax_50 <- 0.0197 # 1.97 dollars/kwh
+tax_51 <- 0.0197 # 1.97 dollars/kwh
 tax_75 <- 0.0289 # 2.89 dollars/kwh
 tax_100 <- 0.0386  # 3.86 dollars/kwh
 tax_125 <- 0.0482  # 4.82 dollars/kwh
@@ -489,16 +433,18 @@ low_use_percentage <- demand(10, demand_low)/Qo_kWh #23%
 #     High = high income % of CS + pre tax rebate
 #     (high) pre tax rebate = (q*high/q*high +q*low) x tax
 pretax_rebate_high <- high_use_percentage * tax_rev
-welfare_high_51 <- pretax_rebate_high + cs_low_tax
-welfare_high_51
+welfare_high_51 <- pretax_rebate_high + cs_high_tax
 
 # b. Welfare to "low" income consumers
 #     Low = CS + pre tax rebate - [MEC x q~]
 #     (low) pre tax rebate = (q*low/q*high +q*low) x tax revenue (p~q~)
 pretax_rebate_low <- low_use_percentage * tax_rev
-welfare_low_51 <- pretax_rebate_high + cs_high_tax
-welfare_low_51
+welfare_low_51 <- pretax_rebate_low + cs_low_tax
 
+welfare_high_51
+
+
+welfare_low_51
 
 
 ```
@@ -512,9 +458,71 @@ a. Welfare of "high" income consumers
 
 b. Welfare of "low" income consumers
 
-**$2966.55**
+**$-2420.92**
 
 c. Electricity producers
+
+
+SCC of $75:
+
+a. Welfare of "high" income consumers
+
+
+
+
+b. Welfare of "low" income consumers
+
+
+
+c. Electricity producers
+
+
+SCC of $100:
+
+
+a. Welfare of "high" income consumers
+
+
+
+
+b. Welfare of "low" income consumers
+
+
+
+c. Electricity producers
+
+
+SCC of $125:
+
+
+
+a. Welfare of "high" income consumers
+
+
+
+
+b. Welfare of "low" income consumers
+
+
+
+c. Electricity producers
+
+
+SCC of $150:
+
+
+
+a. Welfare of "high" income consumers
+
+
+
+
+b. Welfare of "low" income consumers
+
+
+
+c. Electricity producers
+
 
 
 ### **Question #6**
@@ -532,13 +540,7 @@ damage when solar panels are available to the high income group?
 
 
 ```{r}
-#a. What is total electricity consumption?
-
-
-#b. What is the total environmental externality?
-
-#c. What value of the electricity tax makes the total environmental damage the same as the
-#damage when solar panels are available to the high income group?
+#QUESTION 6 SET UP
 
 # DEMAND FUNCTIONS w/ SOLAR AT 51
 dem_high_solar <- function(p){
@@ -556,11 +558,7 @@ dem_agg_solar <- function(p){
   q <- dem_high_solar(p) + dem_low_solar(p)
   return(q)
 }
-```
 
-
-
-```{r eval = FALSE}
 # NEW EQUILIBRIUM PRCICE
 
 mpc_slope <- (10/Qo_kWh)
@@ -570,17 +568,30 @@ mpc_q <- function(p) {p/mpc_slope}
 uniroot(function(p)
   dem_agg_solar(p) - mpc_q(p),
         interval = c(0,20))
+```
+
+
+
+```{r eval = FALSE}
+
+#a. What is total electricity consumption?
 
 # Q OF ELECTRICITY CONSUMED
+
 solar_electricity <- mpc_q(5.84)
 
 solar_electricity
 
+#b. What is the total environmental externality?
+
 # TOTAL ENVIRO EXTERNAILITY (Q * MEC of 1.97 cents)
+
 env_cost_solar <- mpc_q(5.84)*(0.0197)
 
 env_cost_solar
 
+#c. What value of the electricity tax makes the total environmental damage the same as the
+#damage when solar panels are available to the high income group?
 
 # SCC WHEN EQUAL TO SOLAR EQUATION FOR DAMAGE
 
@@ -589,6 +600,7 @@ solar_tax_final <- (.0197/(env_cost_solar/env_cost_tax))
 solar_tax_final
 
 ```
+
 
 - Quantity of electricity consumed: **313,444 kWh**
 - Total cost of environmental damages: **$6174.85**

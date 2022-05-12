@@ -11,7 +11,7 @@
 
 
 
-<title>ESM 204 HW 3</title>
+<title>ESM 204 Homework 3</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -361,9 +361,9 @@ pre code {
 
 
 
-<h1 class="title toc-ignore">ESM 204 HW 3</h1>
+<h1 class="title toc-ignore">ESM 204 Homework 3</h1>
 <h4 class="date">Anna Zauner, Kirsten White and Katherine
-Rosecrance</h4>
+Rosencrance</h4>
 
 </div>
 
@@ -375,9 +375,7 @@ library(janitor)
 library(thematic)
 library(scales)
 library(equatiomatic)
-library(rootSolve)
-thematic::thematic_rmd()
-thematic::thematic_on()</code></pre>
+library(rootSolve)</code></pre>
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
 <pre class="r"><code># Read in the data 
@@ -792,6 +790,81 @@ than $51 (range: $51, $75, $100, $125, $150 per metric ton of CO2)</p>
 <li>Welfare of “low” income consumers</li>
 <li>Electricity producers</li>
 </ol>
+<pre class="r"><code># 1. Find different prices per kWh
+
+#   Reminder: - 1 kWh of electricity = 0.85 lb CO2
+#   1 metric ton = 2204.6 lbs. Thus 1 metric ton of CO2 is emitted    #   from 2204.6/0.85 = 2594 kWh of electricity
+
+# $75/ton - 75/(2594) = $0.0289/kWh
+# $100/ton - 100/(2594) = $0.0386/kWh
+# $125/ton - 125/(2594) = $0.0482/kWh
+# $150/ton - 150/(2594) = $0.0578/kWh
+
+tax_51 &lt;- 0.0197 # 1.97 dollars/kwh
+tax_75 &lt;- 0.0289 # 2.89 dollars/kwh
+tax_100 &lt;- 0.0386  # 3.86 dollars/kwh
+tax_125 &lt;- 0.0482  # 4.82 dollars/kwh
+tax_150 &lt;- 0.0578  # 5.78 dollars /kwh
+
+tax_list &lt;- c(0.0197, 0.0289, 0.0386, 0.0482, 0.0578) # list of tax at each SCC scenario
+
+# How much do each income levels use out of the total? (% of total)
+high_use_percentage &lt;- demand(10, demand_high)/Qo_kWh #77%
+low_use_percentage &lt;- demand(10, demand_low)/Qo_kWh #23%
+
+
+# a. Welfare to &quot;high&quot; income consumers
+#     High = high income % of CS + pre tax rebate
+#     (high) pre tax rebate = (q*high/q*high +q*low) x tax
+pretax_rebate_high &lt;- high_use_percentage * tax_rev
+welfare_high_51 &lt;- pretax_rebate_high + cs_high_tax
+
+# b. Welfare to &quot;low&quot; income consumers
+#     Low = CS + pre tax rebate - [MEC x q~]
+#     (low) pre tax rebate = (q*low/q*high +q*low) x tax revenue (p~q~)
+pretax_rebate_low &lt;- low_use_percentage * tax_rev
+welfare_low_51 &lt;- pretax_rebate_low + cs_low_tax
+
+welfare_high_51</code></pre>
+<pre><code>## [1] 39599.45</code></pre>
+<pre class="r"><code>welfare_low_51</code></pre>
+<pre><code>## [1] -2420.923</code></pre>
+<p>SCC of $51:</p>
+<ol style="list-style-type: lower-alpha">
+<li>Welfare of “high” income consumers</li>
+</ol>
+<p><strong>$39599.45</strong></p>
+<ol start="2" style="list-style-type: lower-alpha">
+<li>Welfare of “low” income consumers</li>
+</ol>
+<p><strong>$-2420.92</strong></p>
+<ol start="3" style="list-style-type: lower-alpha">
+<li>Electricity producers</li>
+</ol>
+<p>SCC of $75:</p>
+<ol style="list-style-type: lower-alpha">
+<li><p>Welfare of “high” income consumers</p></li>
+<li><p>Welfare of “low” income consumers</p></li>
+<li><p>Electricity producers</p></li>
+</ol>
+<p>SCC of $100:</p>
+<ol style="list-style-type: lower-alpha">
+<li><p>Welfare of “high” income consumers</p></li>
+<li><p>Welfare of “low” income consumers</p></li>
+<li><p>Electricity producers</p></li>
+</ol>
+<p>SCC of $125:</p>
+<ol style="list-style-type: lower-alpha">
+<li><p>Welfare of “high” income consumers</p></li>
+<li><p>Welfare of “low” income consumers</p></li>
+<li><p>Electricity producers</p></li>
+</ol>
+<p>SCC of $150:</p>
+<ol style="list-style-type: lower-alpha">
+<li><p>Welfare of “high” income consumers</p></li>
+<li><p>Welfare of “low” income consumers</p></li>
+<li><p>Electricity producers</p></li>
+</ol>
 </div>
 <div id="question-6" class="section level3">
 <h3><strong>Question #6</strong></h3>
@@ -840,11 +913,13 @@ uniroot(function(p)
         interval = c(0,20))
 
 # Q OF ELECTRICITY CONSUMED
+
 solar_electricity &lt;- mpc_q(5.84)
 
 solar_electricity
 
 # TOTAL ENVIRO EXTERNAILITY (Q * MEC of 1.97 cents)
+
 env_cost_solar &lt;- mpc_q(5.84)*(0.0197)
 
 env_cost_solar
