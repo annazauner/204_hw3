@@ -517,11 +517,12 @@ demand_low_100 <- demand_scc(p_100$root, demand_low, 2)
 cs_low_100 <- (0.5*demand_low_100*(demand_low$coefficients[1]-tax_100-p_100$root))/100
 welfare_low_100 <- cs_low_100 - (demand_low_100*0.0386) - revenue_damage_100 + low_use_percentage*revenue_damage_100
               
-# High Income @$100
+# HIGH_100
 demand_high_100 <- demand_scc(p_100$root, demand_high, 2)
 cs_high_100 <- (0.5*demand_high_100*(demand_high$coefficients[1]-tax_100-p_100$root))/100
 welfare_high_100 <- cs_high_100 - (demand_high_100*0.0386) + high_use_percentage*revenue_damage_100
-# Producer @ $100
+
+# PS_100
 ps_100 <- 0.5*demand_100*(p_100$root/100)
 ```
 
