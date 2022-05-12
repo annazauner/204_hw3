@@ -322,7 +322,7 @@ q_tax
 #c. Welfare of "high" income consumers
 
 demand_high_tax <- dem_tax(p_tax, demand_high)
-cs_high_tax <- (0.5 * (.3161 - 0.0197 - (p_tax/100)) * demand_high_tax) - (demand_high_tax * 0.0197)
+cs_high_tax <- (0.5 * (.3161 - price_kWh - (p_tax/100)) * demand_high_tax) - (demand_high_tax * price_kWh)
 
 cs_high_tax
 
@@ -332,8 +332,9 @@ cs_low_tax_og <- cs_low - env_cost_base
 demand_low_tax <- demand(p_tax, demand_low)
 
 # LOW INCOME REDUCE DAMAGE, TAX and INITIAL CS LOW
+
 env_cost_tax <- price_kWh * q_tax
-cs_low_tax <- (0.5 * (.2337 - 0.0197 - 0.0932) * demand_low_tax) - (demand_low_tax * 0.0197) - env_cost_tax
+cs_low_tax <- (0.5 * (.2337 - price_kWh - (p_tax/100)) * demand_low_tax) - (demand_low_tax * price_kWh) - env_cost_tax
 
 cs_low_tax
 
@@ -344,7 +345,7 @@ cs_low_tax
 
 q_tax <- dem_agg_tax(p_tax)
 
-ps_tax <- 0.5*q_tax*0.0932
+ps_tax <- 0.5*q_tax*(p_tax/100)
 
 ps_tax
 
@@ -352,9 +353,13 @@ ps_tax
 
 # P* of MEC (0.0197) TIMES Q*
 
-env_change <- env_cost_base - env_cost_tax
+# PULL FROM PREVIOUS COST WITH TAX VALUE
 
-env_change
+env_cost_tax
+
+# DECREASED FROM BASE
+
+env_cost_base
 
 # g. Tax revenue generated
 
@@ -389,7 +394,7 @@ Decrease to:  **$`r round(ps_tax, 0)`**
 
 f. Total environmental damage
 
-Decreases to: **$`r round(env_change, 0)`**
+Decreases to: **$`r round(env_cost_tax, 0)`**
 
 g. Tax revenue generated
  
