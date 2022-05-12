@@ -435,7 +435,6 @@ price_kWh</code></pre>
 <pre><code>## [1] 0.01965986</code></pre>
 <p>Based on the calculations, the MEC per kWh of electricity is
 <strong>0.0197</strong>.</p>
-<p>git test</p>
 </div>
 <div id="question-2" class="section level3">
 <h3><strong>Question #2</strong></h3>
@@ -508,11 +507,9 @@ Qagg &lt;- map(price, demand_agg) %&gt;%
   unlist()
 agg_df&lt;- tibble(Qagg = Qagg, price = price)
 demand_agg_eq &lt;- lm(price ~ Qagg, data = agg_df) 
-extract_eq(model = demand_agg_eq, use_coefs = TRUE, coef_digits = 5)</code></pre>
-<p><span class="math display">\[
-\operatorname{\widehat{price}} = 29.78135 - 4e-05(\operatorname{Qagg})
-\]</span></p>
-<pre class="r"><code># SWITCH Q ON ONE SIDE OF EQUATION
+
+
+# SWITCH Q ON ONE SIDE OF EQUATION
 agg_slope &lt;- demand_agg_eq$coefficients[2]
 agg_int &lt;- demand_agg_eq$coefficients[1]
 
@@ -524,7 +521,7 @@ agg_slope</code></pre>
 ##    29.78135</code></pre>
 <pre class="r"><code># AGG DEMAND FUNCTION is P = 29.78135 - 0.00004(Qagg) </code></pre>
 <p>Demand function of the aggregate demand is: <strong>P = 29.78135 -
-0.00004(Qagg)</strong></p>
+0.00004 (Qagg)</strong></p>
 <p><strong>b. Supply curve for electricity</strong></p>
 <p>Now we need to calculate the supply curve for electricity. We already
 know that the current price is $0.10/kWh. We also know the MC for
@@ -560,20 +557,24 @@ ps_base &lt;- 0.5*Qo_kWh*0.10
 ps_base</code></pre>
 <pre><code>## [1] 26835.97</code></pre>
 <pre class="r"><code># $26,835.97</code></pre>
-<p>Consumer Benefit is calculated as $5.3135^{4} Producer Benefit is
-calculated as $2.6836^{4}</p>
+<ul>
+<li><p>Consumer Benefit is calculated as
+<strong>$53135.23</strong></p></li>
+<li><p>Producer Benefit is calculated as
+<strong>$26835.97</strong></p></li>
+</ul>
 <p><strong>d. Environmental cost under status quo</strong></p>
 <pre class="r"><code>env_cost_base &lt;- price_kWh*Qo_kWh
 
 env_cost_base</code></pre>
 <pre><code>## [1] 10551.83</code></pre>
 <pre class="r"><code># $10,551.83</code></pre>
-<p>Environmental Cost calculated as $1.0552^{4}</p>
+<p>Environmental Cost calculated as <strong>$10551.83</strong></p>
 </div>
 <div id="question-3" class="section level3">
 <h3><strong>Question #3</strong></h3>
 <p>Calculating consumer benefit divided between “high” and “low” income
-consumers given total consumer surplus is $5.3135^{4} at price of $0.10
+consumers given total consumer surplus is $ 53135.23 at price of $0.10
 per kWh.</p>
 <pre class="r"><code>#PLUG IN INTECEPT FROM LOW DEMAND CURVE TO CALCULATE TRIANGLE
 
@@ -754,31 +755,31 @@ tax_rev</code></pre>
 <ol style="list-style-type: lower-alpha">
 <li>Amount of electricity produced and consumed</li>
 </ol>
-<p>New quantity of electricity: ** ($5.002166^{5})**</p>
+<p>New quantity of electricity: <strong>$5.002166^{5}</strong></p>
 <ol start="2" style="list-style-type: lower-alpha">
 <li>Price of electricity</li>
 </ol>
-<p>New equilibrium price of electricity: ** ($9.32)**</p>
+<p>New equilibrium price of electricity: <strong>$9.32</strong></p>
 <ol start="3" style="list-style-type: lower-alpha">
 <li>Welfare of “high” income consumers</li>
 </ol>
-<p>$ <strong>($3.198862^{4})</strong></p>
+<p>Decreases to: <strong>$3.198862^{4}</strong></p>
 <ol start="4" style="list-style-type: lower-alpha">
 <li>Welfare of “low” income consumers</li>
 </ol>
-<p>Decrease to: $ <strong>($-4644.28)</strong></p>
+<p>Decrease to: <strong>$-4644.28</strong></p>
 <ol start="5" style="list-style-type: lower-alpha">
 <li>Power suppliers surplus</li>
 </ol>
-<p>Decrease to: $ <strong>($2.331009^{4})</strong></p>
+<p>Decrease to: <strong>$2.331009^{4}</strong></p>
 <ol start="6" style="list-style-type: lower-alpha">
 <li>Total environmental damage</li>
 </ol>
-<p>Decreases to: $ <strong>($717.64)</strong></p>
+<p>Decreases to: <strong>$717.64</strong></p>
 <ol start="7" style="list-style-type: lower-alpha">
 <li>Tax revenue generated</li>
 </ol>
-<p>$ <strong>($9834.19)</strong></p>
+<p><strong>$9834.19</strong></p>
 </div>
 <div id="question-5" class="section level3">
 <h3><strong>Question #5</strong></h3>

@@ -429,7 +429,7 @@ New equilibrium price of electricity:  **$`r round(p_tax, 2)`**
 
 c. Welfare of "high" income consumers
 
-**$`r round(cs_high_tax, 2)`**
+Decreases to: **$`r round(cs_high_tax, 2)`**
 
 d. Welfare of "low" income consumers 
 
