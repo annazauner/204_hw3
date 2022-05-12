@@ -591,8 +591,9 @@ cs_high &lt;- 0.5*(.3161-.10)*demand(10, demand_high)
 
 cs_high</code></pre>
 <pre><code>## [1] 44881.32</code></pre>
-<p>Consumer surplus for the high-income group ($8112) is significantly
-larger than the consumer surplus for the low-income group ( $44881)</p>
+<p>Consumer surplus for the high-income group <strong>($8112)</strong>
+is significantly larger than the consumer surplus for the low-income
+group <strong>( $44881)</strong></p>
 </div>
 <div id="question-4" class="section level3">
 <h3><strong>Question #4</strong></h3>
@@ -658,6 +659,125 @@ by “low” income group</p>
 # g. Tax revenue generated
 
 # P* TIMES Q*</code></pre>
+<pre class="r"><code>mpc_q &lt;- function(p) {p/supply_slope} # MPC in terms of Q
+
+# DEMAND FUNCTION WITH TAX (SOLVED IN #1 MEC = $0.01965986 -&gt; 1.97 cents)
+
+dem_tax &lt;- function(p, model){
+  q &lt;- (p - (model$coefficients[[1]]-1.97))/model$coefficients[[2]]
+  q &lt;- ifelse(q&lt;0,0,q)
+  return(q)
+}
+# AGG DEMAND FUNCTION w/ TAX
+dem_agg_tax &lt;- function(p){
+  q &lt;- dem_tax(p, demand_low) + dem_tax(p, demand_high)
+  return(q)
+}
+
+# NEW EQUILIBRIUM 
+
+uniroot(function(p)
+  dem_agg_tax(p) - mpc_q(p),
+        interval = c(0,20))</code></pre>
+<pre><code>## $root
+## [1] 9.319886
+## 
+## $f.root
+## [1] 0.000000000174623
+## 
+## $iter
+## [1] 2
+## 
+## $init.it
+## [1] NA
+## 
+## $estim.prec
+## [1] 0.00006103516</code></pre>
+<pre class="r"><code># a. Amount of electricity produced and consumed
+
+# b. Price of electricity
+
+#save new p
+p_tax &lt;- 9.31988
+
+#generate new Q
+q_tax &lt;- dem_agg_tax(p_tax)
+
+q_tax</code></pre>
+<pre><code>## [1] 500216.6</code></pre>
+<pre class="r"><code>#c. Welfare of &quot;high&quot; income consumers
+
+demand_high_tax &lt;- dem_tax(p_tax, demand_high)
+cs_high_tax &lt;- (0.5 * (.3161 - 0.0197 - (p_tax/100)) * demand_high_tax) - (demand_high_tax * 0.0197)
+
+cs_high_tax</code></pre>
+<pre><code>## [1] 31988.62</code></pre>
+<pre class="r"><code># d DOES NOT MAKE SENSE NEED HELP!!!!!!!!!!!
+
+#d. Welfare of &quot;low&quot; income consumers
+
+cs_low_tax_og &lt;- cs_low - env_cost_base
+demand_low_tax &lt;- demand(p_tax, demand_low)
+#Below is the total env cost at the new level of consumption
+env_cost_tax &lt;- price_kWh * q_tax
+cs_low_tax &lt;- (0.5 * (.2337 - 0.0197 - 0.0932) * demand_low_tax) - (demand_low_tax * 0.0197) - env_cost_tax
+
+cs_low_tax</code></pre>
+<pre><code>## [1] -4644.282</code></pre>
+<pre class="r"><code># e. Power suppliers 
+
+# FIND NEW P FOR SUPPLIERS GIVEN Q*
+
+q_tax &lt;- dem_agg_tax(p_tax)
+
+ps_tax &lt;- 0.5*q_tax*0.0932
+
+ps_tax</code></pre>
+<pre><code>## [1] 23310.09</code></pre>
+<pre class="r"><code># f. Total environmental damage
+
+# P* of MEC (0.0197) TIMES Q*
+
+env_change &lt;- env_cost_base - env_cost_tax
+
+env_change</code></pre>
+<pre><code>## [1] 717.6414</code></pre>
+<pre class="r"><code># g. Tax revenue generated
+
+# P* TIMES Q*
+
+tax_rev &lt;- price_kWh*q_tax
+
+tax_rev</code></pre>
+<pre><code>## [1] 9834.19</code></pre>
+<ol style="list-style-type: lower-alpha">
+<li>Amount of electricity produced and consumed</li>
+</ol>
+<p>New quantity of electricity: ** ($500216.6)**</p>
+<ol start="2" style="list-style-type: lower-alpha">
+<li>Price of electricity</li>
+</ol>
+<p>New equilibrium price of electricity: <strong>($9.32)</strong></p>
+<ol start="3" style="list-style-type: lower-alpha">
+<li>Welfare of “high” income consumers</li>
+</ol>
+<p>$ <strong>($31988.62)</strong></p>
+<ol start="4" style="list-style-type: lower-alpha">
+<li>Welfare of “low” income consumers</li>
+</ol>
+<p>Decrease to: EDIT NEEDED $ <strong>($-4644.28)</strong></p>
+<ol start="5" style="list-style-type: lower-alpha">
+<li>Power suppliers surplus</li>
+</ol>
+<p>Decrease to: $ <strong>($23310.09)</strong></p>
+<ol start="6" style="list-style-type: lower-alpha">
+<li>Total environmental damage</li>
+</ol>
+<p>Decreases : $ <strong>($717.64)</strong></p>
+<ol start="7" style="list-style-type: lower-alpha">
+<li>Tax revenue generated</li>
+</ol>
+<p>$ <strong>($9834.19)</strong></p>
 </div>
 <div id="question-5" class="section level3">
 <h3><strong>Question #5</strong></h3>
@@ -673,47 +793,67 @@ than $51 (range: $51, $75, $100, $125, $150 per metric ton of CO2)</p>
 </div>
 <div id="question-6" class="section level3">
 <h3><strong>Question #6</strong></h3>
-<p>SANDY’S EXAMPLE CODE IF NEEDED</p>
-<p>df &lt;- read_csv(“G:/My
-Drive/0UCSB_EES/3TA_Material/S22_ESM204/Homework 3/HW3_data.csv”) %&gt;%
-select(-1) %&gt;% clean_names()</p>
-<p>model_demand_l &lt;- lm(price_cents ~ q_low_kwh, data=df)
-model_demand_h &lt;- lm(price_cents ~ q_high_kwh, data=df)</p>
+<p>Suppose the “high” income group has access to expensive home solar
+generation. This lowers the electricity demand curve for the “high”
+income group by half (vertically). Under this new demand:</p>
+<ol style="list-style-type: lower-alpha">
+<li><p>What is total electricity consumption?</p></li>
+<li><p>What is the total environmental externality?</p></li>
+<li><p>What value of the electricity tax makes the total environmental
+damage the same as the damage when solar panels are available to the
+high income group?</p></li>
+</ol>
+<pre class="r"><code>#a. What is total electricity consumption?
+
+
+#b. What is the total environmental externality?
+
+#c. What value of the electricity tax makes the total environmental damage the same as the
+#damage when solar panels are available to the high income group?
+
+# Demand function with solar and SCC at 51
+# Demand functions (high and low) with solar and SCC at 51
+dem_high_solar &lt;- function(p){
+  q &lt;- (p - (demand_high$coefficients[[1]]-1.97)/2)/demand_high$coefficients[[2]]
+  q &lt;- ifelse(q&lt;0,0,q)
+  return(q)
+}
+dem_low_solar &lt;- function(p){
+  q &lt;- (p - (demand_low$coefficients[[1]]-1.97))/demand_low$coefficients[[2]]
+  q &lt;- ifelse(q&lt;0,0,q)
+  return(q)
+}
+# Creating an aggregate demand function
+dem_agg_solar &lt;- function(p){
+  q &lt;- dem_high_solar(p) + dem_low_solar(p)
+  return(q)
+}</code></pre>
+<pre class="r"><code># Find the new equilibrium price (at the intersection agg demand and supply curve)
+
+mpc_slope &lt;- (10/Qo_kWh)
+
+mpc_q &lt;- function(p) {p/mpc_slope}
+
+uniroot(function(p)
+  dem_agg_solar(p) - mpc_q(p),
+        interval = c(0,20))
+
+# Find quantity of electricity consumed
+solar_electricity &lt;- mpc_q(5.84)
+
+solar_electricity
+
+# Find the total environmental externality (Q * MEC of 1.97 cents)
+env_cost_solar &lt;- mpc_q(5.84)*(1.97)
+
+env_cost_solar</code></pre>
+<ul>
+<li>Quantity of electricity consumed: r round(solar_electricity, 2)`
+kWh</li>
+<li>Total cost of environmental damages: $r round(solar_electricity,
+2)`</li>
+</ul>
 </div>
-</div>
-<div id="need-to-rearrange-the-parameter-to-get-qp" class="section level1">
-<h1>need to rearrange the parameter to get Q(P)!</h1>
-</div>
-<div id="qgg-qlowp-qlowh" class="section level1">
-<h1>Qgg = Qlow(P) + Qlow(h)</h1>
-</div>
-<div id="importantly-since-they-intercepts-are-different-we-know-that-qaggp-will-have-a-kink.-i-include-an-ifelse-statement-to-take" class="section level1">
-<h1>Importantly, since they-intercepts are different, we know that
-Qagg(P) will have a kink. I include an ifelse() statement to take</h1>
-</div>
-<div id="care-of-the-kink." class="section level1">
-<h1>care of the kink.</h1>
-</div>
-<div id="define-a-function-to-get-demand" class="section level1">
-<h1>define a function to get demand</h1>
-<p>demand &lt;- function(p, model){ q &lt;- (p - model<span class="math inline">\(coefficients[[1]])/model\)</span>coefficients[[2]]
-q &lt;- ifelse(q&lt;0,0,q) return(q) }</p>
-</div>
-<div id="for-each-p-level-return-estimated-aggregate-demand" class="section level1">
-<h1>for each p level, return estimated aggregate demand</h1>
-<p>demand_agg &lt;- function(p){ q &lt;- demand(p, model_demand_l) +
-demand(p, model_demand_h) return(q) }</p>
-<p>price = seq(0, 30, length.out = 100) Qagg &lt;- map(price,
-demand_agg) %&gt;% unlist()</p>
-<p>df&lt;- tibble(Qagg = Qagg, price = price)</p>
-<p>ggplot(df, aes(Qagg, price)) + geom_line()</p>
-</div>
-<div id="i-also-define-functions-for-calculating-the-consumer-surplus" class="section level1">
-<h1>I also define functions for calculating the consumer surplus:</h1>
-<p>CS &lt;- function(p, model){ q &lt;- demand(p, model) cs &lt;-
-0.5<em>(model$coefficients[[1]] - p)</em>q return(cs) }</p>
-<p>CS_agg &lt;- function(p){ cs &lt;- CS(p,model_demand_l) +
-CS(p,model_demand_h) return(cs)</p>
 </div>
 
 
